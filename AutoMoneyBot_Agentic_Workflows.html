@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoMoneyBot - Agentic AI Workflows</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+        .version {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.2);
+            color: #a5b4fc;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+        .toc {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(71, 85, 105, 0.5);
+        }
+        .toc h2 {
+            font-size: 1.2rem;
+            color: #c084fc;
+            margin-bottom: 1rem;
+        }
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 0.5rem;
+        }
+        .toc a {
+            color: #93c5fd;
+            text-decoration: none;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            display: block;
+        }
+        .toc a:hover {
+            background: rgba(99, 102, 241, 0.2);
+            color: #c4b5fd;
+        }
+        .workflow-section {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(71, 85, 105, 0.5);
+        }
+        .workflow-section h2 {
+            font-size: 1.8rem;
+            color: #c084fc;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .workflow-section h3 {
+            font-size: 1.3rem;
+            color: #a5b4fc;
+            margin: 1.5rem 0 1rem 0;
+        }
+        .workflow-section h4 {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            margin: 1rem 0 0.75rem 0;
+        }
+        .agent-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-research { background: #166534; color: #86efac; }
+        .badge-strategy { background: #1e40af; color: #93c5fd; }
+        .badge-risk { background: #991b1b; color: #fca5a5; }
+        .badge-execution { background: #854d0e; color: #fde047; }
+        .badge-explanation { background: #6b21a8; color: #d8b4fe; }
+        .description {
+            color: #94a3b8;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        .mermaid {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+        .workflow-details {
+            background: rgba(15, 23, 42, 0.4);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-left: 3px solid #6366f1;
+        }
+        .workflow-details h5 {
+            color: #a5b4fc;
+            margin-bottom: 0.5rem;
+        }
+        .workflow-details ul {
+            color: #94a3b8;
+            margin-left: 1.5rem;
+        }
+        .workflow-details li {
+            margin: 0.25rem 0;
+        }
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.5), transparent);
+            margin: 2rem 0;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 1.5rem;
+        }
+        .metric-box {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid rgba(71, 85, 105, 0.3);
+        }
+        .metric-box h5 {
+            color: #818cf8;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            h1 { font-size: 1.8rem; }
+            .grid-2 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 AutoMoneyBot</h1>
+            <p class="subtitle">Agentic AI Workflow Documentation</p>
+            <span class="version">PRD v3.0 - January 2026</span>
+        </header>
+
+        <nav class="toc">
+            <h2>📋 Table of Contents</h2>
+            <div class="toc-grid">
+                <a href="#overview">1. Multi-Agent System Overview</a>
+                <a href="#research">2. Research Agent Workflows</a>
+                <a href="#strategy">3. Strategy Agent Workflows</a>
+                <a href="#risk">4. Risk Agent Workflows</a>
+                <a href="#execution">5. Execution Agent Workflows</a>
+                <a href="#explanation">6. Explanation Agent Workflows</a>
+                <a href="#coordination">7. Multi-Agent Coordination</a>
+                <a href="#daily">8. Daily Trading Orchestration</a>
+                <a href="#breach">9. Risk Breach Response</a>
+                <a href="#conversational">10. Conversational Interface</a>
+            </div>
+        </nav>
+
+        <!-- Section 1: Multi-Agent Overview -->
+        <section id="overview" class="workflow-section">
+            <h2>🔄 Multi-Agent System Overview</h2>
+            <p class="description">
+                The AutoMoneyBot agentic architecture consists of five specialized agents that collaborate to manage portfolios autonomously while maintaining human oversight for critical decisions.
+            </p>
+            <div class="mermaid">
+flowchart TB
+    subgraph External["📡 External Data Sources"]
+        NEWS[("News APIs")]
+        SEC[("SEC EDGAR")]
+        MARKET[("Market Data")]
+        BROKER[("Broker API")]
+    end
+
+    subgraph Agents["🤖 Agent Layer"]
+        RA["🔬 Research Agent<br/><i>Continuous Monitoring</i>"]
+        SA["📊 Strategy Agent<br/><i>Portfolio Optimization</i>"]
+        RISK["🛡️ Risk Agent<br/><i>Risk Management</i>"]
+        EA["⚡ Execution Agent<br/><i>Order Management</i>"]
+        EXP["💬 Explanation Agent<br/><i>Natural Language</i>"]
+    end
+
+    subgraph Core["⚙️ Core Systems"]
+        ML["ML Models<br/>(Factor + Trend)"]
+        DB[("PostgreSQL<br/>TimescaleDB")]
+        QUEUE["Message Queue"]
+    end
+
+    subgraph UI["👤 User Interface"]
+        DASH["Dashboard"]
+        CHAT["Conversational UI"]
+        MOBILE["Mobile App"]
+    end
+
+    NEWS --> RA
+    SEC --> RA
+    MARKET --> SA
+    MARKET --> RISK
+    BROKER --> EA
+
+    RA -->|"Context"| SA
+    RA -->|"Alerts"| RISK
+    SA -->|"Decisions"| RISK
+    RISK -->|"Approved Trades"| EA
+    SA -->|"Explanations"| EXP
+    RISK -->|"Risk Reports"| EXP
+    EA -->|"Execution Reports"| EXP
+
+    ML --> SA
+    DB --> RA
+    DB --> SA
+    DB --> RISK
+    QUEUE --> Agents
+
+    EXP --> DASH
+    EXP --> CHAT
+    EXP --> MOBILE
+
+    style RA fill:#166534,stroke:#22c55e
+    style SA fill:#1e40af,stroke:#3b82f6
+    style RISK fill:#991b1b,stroke:#ef4444
+    style EA fill:#854d0e,stroke:#eab308
+    style EXP fill:#6b21a8,stroke:#a855f7
+            </div>
+
+            <div class="workflow-details">
+                <h5>Agent Responsibilities</h5>
+                <ul>
+                    <li><strong>Research Agent:</strong> Monitors news, filings, and macro data; generates position context</li>
+                    <li><strong>Strategy Agent:</strong> Resolves signal conflicts, adapts to regime changes, optimizes portfolio</li>
+                    <li><strong>Risk Agent:</strong> Continuous risk monitoring, breach diagnosis, de-risking recommendations</li>
+                    <li><strong>Execution Agent:</strong> Order routing, partial fill handling, execution quality optimization</li>
+                    <li><strong>Explanation Agent:</strong> Natural language generation for all user-facing communications</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section 2: Research Agent -->
+        <section id="research" class="workflow-section">
+            <h2><span class="agent-badge badge-research">RESEARCH</span> Research Agent Workflows</h2>
+            <p class="description">
+                The Research Agent operates continuously, monitoring external information sources and synthesizing qualitative context for portfolio positions.
+            </p>
+
+            <h3>2.1 Continuous News Monitoring</h3>
+            <div class="mermaid">
+flowchart LR
+    subgraph Input["Data Sources"]
+        A1["News APIs"]
+        A2["Social Feeds"]
+        A3["Analyst Reports"]
+    end
+
+    subgraph Process["Processing Pipeline"]
+        B1["Poll Sources<br/><i>Every 15 min</i>"]
+        B2["Relevance Filter<br/><i>Score > 0.6</i>"]
+        B3["Classify Type"]
+        B4["Extract Facts"]
+        B5["Assess Impact"]
+    end
+
+    subgraph Output["Outputs"]
+        C1["Position Context<br/>Store"]
+        C2["Alert to<br/>Strategy Agent"]
+        C3["Daily Digest"]
+    end
+
+    A1 --> B1
+    A2 --> B1
+    A3 --> B1
+    B1 --> B2
+    B2 -->|"Relevant"| B3
+    B2 -->|"Irrelevant"| X["Discard"]
+    B3 --> B4
+    B4 --> B5
+    B5 -->|"Low/Medium"| C1
+    B5 -->|"High Impact"| C2
+    B5 --> C3
+
+    style B5 fill:#166534,stroke:#22c55e
+    style C2 fill:#991b1b,stroke:#ef4444
+            </div>
+
+            <h3>2.2 SEC Filing Analysis</h3>
+            <div class="mermaid">
+flowchart TB
+    A["Monitor SEC EDGAR"] --> B{"New Filing?"}
+    B -->|"No"| A
+    B -->|"Yes"| C["Download & Parse"]
+    C --> D["Extract Key Sections"]
+    
+    subgraph Extraction["Section Analysis"]
+        D --> E1["Risk Factors"]
+        D --> E2["MD&A"]
+        D --> E3["Financial Statements"]
+        D --> E4["Material Changes"]
+    end
+
+    E1 --> F["Compare to Prior Filing"]
+    E2 --> F
+    E3 --> F
+    E4 --> F
+
+    F --> G{"Red Flags<br/>Detected?"}
+    G -->|"Going Concern"| H1["CRITICAL Alert"]
+    G -->|"Restatement"| H2["HIGH Alert"]
+    G -->|"Auditor Change"| H3["MEDIUM Alert"]
+    G -->|"None"| I["Update Context Store"]
+
+    H1 --> J["Alert Strategy + Risk Agents"]
+    H2 --> J
+    H3 --> I
+
+    style H1 fill:#991b1b,stroke:#ef4444
+    style H2 fill:#854d0e,stroke:#eab308
+    style J fill:#1e40af,stroke:#3b82f6
+            </div>
+
+            <h3>2.3 Earnings Call Processing</h3>
+            <div class="mermaid">
+sequenceDiagram
+    participant T as Transcript Source
+    participant RA as Research Agent
+    participant DB as Context Store
+    participant SA as Strategy Agent
+
+    T->>RA: New transcript available
+    RA->>RA: Parse prepared remarks
+    RA->>RA: Parse Q&A section
+    RA->>RA: Extract guidance changes
+    RA->>RA: Analyze management tone
+    RA->>RA: Identify key themes
+    
+    alt Guidance Changed
+        RA->>SA: Alert: Material guidance change
+        SA->>SA: Re-evaluate position
+    end
+    
+    alt Tone Significantly Negative
+        RA->>SA: Alert: Sentiment deterioration
+    end
+
+    RA->>DB: Store call summary
+    RA->>DB: Update position context
+            </div>
+        </section>
+
+        <!-- Section 3: Strategy Agent -->
+        <section id="strategy" class="workflow-section">
+            <h2><span class="agent-badge badge-strategy">STRATEGY</span> Strategy Agent Workflows</h2>
+            <p class="description">
+                The Strategy Agent is the central decision-maker, coordinating signals from ML models and other agents to optimize portfolio composition.
+            </p>
+
+            <h3>3.1 Signal Aggregation & Conflict Resolution</h3>
+            <div class="mermaid">
+flowchart TB
+    subgraph Signals["Signal Sources"]
+        S1["Factor Model<br/><i>63-day horizon</i>"]
+        S2["Trend Model<br/><i>5-day horizon</i>"]
+        S3["Research Context"]
+        S4["Risk Constraints"]
+    end
+
+    SA["Strategy Agent"]
+
+    S1 -->|"Factor Score"| SA
+    S2 -->|"Trend Signal"| SA
+    S3 -->|"Qualitative Overlay"| SA
+    S4 -->|"Limits"| SA
+
+    SA --> D{"Signals<br/>Aligned?"}
+    
+    D -->|"Yes"| E1["Generate Trade<br/>with High Confidence"]
+    D -->|"No"| F["Conflict Resolution"]
+
+    subgraph Resolution["Conflict Resolution Logic"]
+        F --> G1{"Risk Signal<br/>Involved?"}
+        G1 -->|"Yes"| H1["Risk Takes Priority"]
+        G1 -->|"No"| G2{"Analyze Cause"}
+        G2 --> H2["Regime Change?"]
+        G2 --> H3["Sector Rotation?"]
+        G2 --> H4["Data Quality Issue?"]
+    end
+
+    H1 --> I["Apply Risk Decision"]
+    H2 --> J["Adjust Parameters"]
+    H3 --> K["Reduce Position Size"]
+    H4 --> L["Flag for Review"]
+
+    I --> M["Generate Trade<br/>with Reasoning Trace"]
+    J --> M
+    K --> M
+    L --> N["Human Review Required"]
+
+    style SA fill:#1e40af,stroke:#3b82f6
+    style H1 fill:#991b1b,stroke:#ef4444
+    style N fill:#854d0e,stroke:#eab308
+            </div>
+
+            <h3>3.2 Regime Detection Workflow</h3>
+            <div class="mermaid">
+flowchart LR
+    subgraph Indicators["Market Indicators"]
+        I1["VIX Level"]
+        I2["Yield Curve"]
+        I3["Credit Spreads"]
+        I4["Sector Correlations"]
+        I5["Market Breadth"]
+    end
+
+    SA["Strategy Agent<br/>Regime Classifier"]
+
+    I1 --> SA
+    I2 --> SA
+    I3 --> SA
+    I4 --> SA
+    I5 --> SA
+
+    SA --> R{"Current Regime"}
+    
+    R -->|"Risk-On"| A1["Increase Equity Weight<br/>Higher Beta Tolerance"]
+    R -->|"Risk-Off"| A2["Reduce Positions<br/>Tighten Stops"]
+    R -->|"High Vol"| A3["Smaller Position Sizes<br/>Wider Bands"]
+    R -->|"Transition"| A4["Reduce New Positions<br/>Monitor Closely"]
+
+    A1 --> P["Update Strategy Parameters"]
+    A2 --> P
+    A3 --> P
+    A4 --> P
+
+    P --> N["Notify Risk Agent"]
+
+    style SA fill:#1e40af,stroke:#3b82f6
+    style A2 fill:#991b1b,stroke:#ef4444
+            </div>
+
+            <h3>3.3 Portfolio Rebalancing Decision</h3>
+            <div class="mermaid">
+stateDiagram-v2
+    [*] --> CheckTrigger
+    
+    CheckTrigger --> TimeTriggered: Monthly schedule
+    CheckTrigger --> DriftTriggered: Drift > 5%
+    CheckTrigger --> SignalTriggered: New signal
+    CheckTrigger --> RiskTriggered: Risk breach
+
+    TimeTriggered --> GatherInputs
+    DriftTriggered --> GatherInputs
+    SignalTriggered --> GatherInputs
+    RiskTriggered --> GatherInputs
+
+    GatherInputs --> FactorScores
+    FactorScores --> TrendSignals
+    TrendSignals --> ResearchContext
+    ResearchContext --> RiskLimits
+
+    RiskLimits --> Optimize
+    Optimize --> GenerateTrades
+
+    GenerateTrades --> ValidateRisk
+    ValidateRisk --> ApprovedTrades: Within limits
+    ValidateRisk --> AdjustTrades: Exceeds limits
+
+    AdjustTrades --> ValidateRisk
+
+    ApprovedTrades --> SendToExecution
+    SendToExecution --> [*]
+            </div>
+        </section>
+
+        <!-- Section 4: Risk Agent -->
+        <section id="risk" class="workflow-section">
+            <h2><span class="agent-badge badge-risk">RISK</span> Risk Agent Workflows</h2>
+            <p class="description">
+                The Risk Agent continuously monitors portfolio risk metrics and can autonomously pause trading when thresholds are breached.
+            </p>
+
+            <h3>4.1 Continuous Risk Monitoring</h3>
+            <div class="mermaid">
+flowchart TB
+    subgraph Metrics["Risk Metrics (Updated Every 60s)"]
+        M1["Portfolio VaR 95%"]
+        M2["CVaR / Expected Shortfall"]
+        M3["Current Drawdown"]
+        M4["Position Concentrations"]
+        M5["Sector Exposures"]
+        M6["Beta to Market"]
+    end
+
+    RA["Risk Agent"]
+
+    M1 --> RA
+    M2 --> RA
+    M3 --> RA
+    M4 --> RA
+    M5 --> RA
+    M6 --> RA
+
+    RA --> C{"Check Against<br/>Limits"}
+
+    C -->|"All Clear"| G["✅ Continue Normal<br/>Operations"]
+    C -->|"Warning (90%)"| W["⚠️ Warning State"]
+    C -->|"Critical (100%)"| CR["🔴 Critical State"]
+    C -->|"Emergency (150%)"| EM["🚨 Emergency State"]
+
+    W --> N1["Log Warning"]
+    W --> N2["Notify User"]
+    W --> N3["Alert Strategy Agent"]
+
+    CR --> P1["PAUSE New Trades"]
+    CR --> P2["Calculate De-risk Options"]
+    CR --> P3["Start 1hr Override Timer"]
+
+    EM --> E1["HALT All Trading"]
+    EM --> E2["Execute Emergency De-risk"]
+    EM --> E3["Move to Defensive Position"]
+
+    style G fill:#166534,stroke:#22c55e
+    style W fill:#854d0e,stroke:#eab308
+    style CR fill:#991b1b,stroke:#ef4444
+    style EM fill:#7f1d1d,stroke:#dc2626
+            </div>
+
+            <h3>4.2 Breach Diagnosis Workflow</h3>
+            <div class="mermaid">
+flowchart TB
+    A["Risk Breach Detected"] --> B["Gather Context"]
+    
+    subgraph Context["Context Collection"]
+        B --> C1["Recent Market Moves"]
+        B --> C2["Position Changes"]
+        B --> C3["Correlation Shifts"]
+        B --> C4["News Events"]
+    end
+
+    C1 --> D["Causal Analysis"]
+    C2 --> D
+    C3 --> D
+    C4 --> D
+
+    D --> E{"Root Cause"}
+
+    E -->|"Market-Wide Volatility"| F1["Temporary - Wait"]
+    E -->|"Single Position"| F2["Trim Position"]
+    E -->|"Sector Concentration"| F3["Diversify Sector"]
+    E -->|"Correlation Breakdown"| F4["Rebalance Portfolio"]
+    E -->|"External Shock"| F5["Defensive Mode"]
+
+    F1 --> G["Generate Recommendation<br/>with Reasoning"]
+    F2 --> G
+    F3 --> G
+    F4 --> G
+    F5 --> G
+
+    G --> H["Send to Explanation Agent"]
+    H --> I["Present to User"]
+
+    style A fill:#991b1b,stroke:#ef4444
+    style G fill:#1e40af,stroke:#3b82f6
+            </div>
+
+            <h3>4.3 Pre-Trade Risk Validation</h3>
+            <div class="mermaid">
+sequenceDiagram
+    participant SA as Strategy Agent
+    participant RA as Risk Agent
+    participant EA as Execution Agent
+
+    SA->>RA: Proposed trade list
+    
+    loop For Each Trade
+        RA->>RA: Check position limit (10%)
+        RA->>RA: Check sector limit (50%)
+        RA->>RA: Project post-trade VaR
+        RA->>RA: Check liquidity adequacy
+    end
+
+    alt All Checks Pass
+        RA->>EA: ✅ Approved trade list
+        EA->>EA: Queue for execution
+    else Some Trades Rejected
+        RA->>SA: ⚠️ Partial approval + reasons
+        SA->>SA: Adjust rejected trades
+        SA->>RA: Resubmit adjusted trades
+    else Portfolio-Level Breach
+        RA->>SA: 🔴 Reject all - risk exceeded
+        RA->>RA: Trigger breach response
+    end
+            </div>
+        </section>
+
+        <!-- Section 5: Execution Agent -->
+        <section id="execution" class="workflow-section">
+            <h2><span class="agent-badge badge-execution">EXECUTION</span> Execution Agent Workflows</h2>
+            <p class="description">
+                The Execution Agent manages order routing, monitors fills, and optimizes execution quality while handling edge cases like partial fills.
+            </p>
+
+            <h3>5.1 Order Execution Flow</h3>
+            <div class="mermaid">
+flowchart TB
+    A["Receive Approved<br/>Trade List"] --> B["Prioritize Orders"]
+    
+    subgraph Priority["Priority Logic"]
+        B --> P1["Risk Reduction: HIGH"]
+        B --> P2["Rebalancing: MEDIUM"]
+        B --> P3["New Positions: LOW"]
+    end
+
+    P1 --> C["Select Order Type"]
+    P2 --> C
+    P3 --> C
+
+    subgraph OrderType["Order Type Selection"]
+        C --> T1["Market: Urgent Risk"]
+        C --> T2["Limit: Normal"]
+        C --> T3["TWAP: Large Orders"]
+    end
+
+    T1 --> D["Submit to Broker API"]
+    T2 --> D
+    T3 --> D
+
+    D --> E{"Order Status"}
+
+    E -->|"Filled"| F1["✅ Log & Confirm"]
+    E -->|"Partial"| F2["Handle Partial Fill"]
+    E -->|"Rejected"| F3["Diagnose & Retry"]
+    E -->|"Timeout"| F4["Cancel & Reassess"]
+
+    F2 --> G{"Partial Fill<br/>Strategy"}
+    G -->|"Leave Open"| H1["Monitor until EOD"]
+    G -->|"Cancel Rest"| H2["Accept partial"]
+    G -->|"Adjust Price"| H3["Resubmit remainder"]
+
+    F1 --> I["Update Portfolio State"]
+    H1 --> I
+    H2 --> I
+    H3 --> D
+
+    style F1 fill:#166534,stroke:#22c55e
+    style F3 fill:#991b1b,stroke:#ef4444
+            </div>
+
+            <h3>5.2 Order State Machine</h3>
+            <div class="mermaid">
+stateDiagram-v2
+    [*] --> Pending: Trade approved
+    
+    Pending --> Submitted: Send to broker
+    Pending --> Cancelled: Risk override
+    
+    Submitted --> PartialFill: Partial execution
+    Submitted --> Filled: Full execution
+    Submitted --> Rejected: Broker rejects
+    Submitted --> Cancelled: User/system cancel
+    
+    PartialFill --> Filled: Remainder fills
+    PartialFill --> Cancelled: Cancel remainder
+    PartialFill --> Submitted: Adjust & resubmit
+    
+    Rejected --> Pending: Fix & retry
+    Rejected --> Failed: Unrecoverable
+    
+    Filled --> [*]
+    Cancelled --> [*]
+    Failed --> [*]
+            </div>
+
+            <h3>5.3 Execution Quality Monitoring</h3>
+            <div class="mermaid">
+flowchart LR
+    subgraph Metrics["Execution Metrics"]
+        M1["Slippage vs VWAP"]
+        M2["Fill Rate %"]
+        M3["Time to Fill"]
+        M4["Reject Rate"]
+    end
+
+    EA["Execution Agent<br/>Quality Monitor"]
+
+    M1 --> EA
+    M2 --> EA
+    M3 --> EA
+    M4 --> EA
+
+    EA --> A{"Quality<br/>Assessment"}
+
+    A -->|"Good"| R1["Continue Current<br/>Strategy"]
+    A -->|"Degraded"| R2["Adjust Order Types<br/>More Limit Orders"]
+    A -->|"Poor"| R3["Alert + Switch to<br/>Conservative Mode"]
+
+    R1 --> L["Log Metrics"]
+    R2 --> L
+    R3 --> L
+
+    style EA fill:#854d0e,stroke:#eab308
+            </div>
+        </section>
+
+        <!-- Section 6: Explanation Agent -->
+        <section id="explanation" class="workflow-section">
+            <h2><span class="agent-badge badge-explanation">EXPLANATION</span> Explanation Agent Workflows</h2>
+            <p class="description">
+                The Explanation Agent translates system decisions into natural language, powering the conversational interface and all user communications.
+            </p>
+
+            <h3>6.1 Trade Explanation Generation</h3>
+            <div class="mermaid">
+flowchart TB
+    A["Trade Executed"] --> B["Gather Decision Context"]
+    
+    subgraph Context["Context Sources"]
+        B --> C1["Strategy Agent<br/>Reasoning Trace"]
+        B --> C2["Risk Agent<br/>Validation Log"]
+        B --> C3["Research Agent<br/>Position Context"]
+        B --> C4["Execution Agent<br/>Fill Details"]
+    end
+
+    C1 --> D["Explanation Agent"]
+    C2 --> D
+    C3 --> D
+    C4 --> D
+
+    D --> E["Generate Explanation"]
+    
+    subgraph Output["Output Formats"]
+        E --> F1["Short Summary<br/><i>1-2 sentences</i>"]
+        E --> F2["Detailed Explanation<br/><i>Full reasoning</i>"]
+        E --> F3["Technical Details<br/><i>For advanced users</i>"]
+    end
+
+    F1 --> G["Push Notification"]
+    F2 --> H["Dashboard Card"]
+    F3 --> I["Drill-down View"]
+
+    style D fill:#6b21a8,stroke:#a855f7
+            </div>
+
+            <h3>6.2 Conversational Query Handling</h3>
+            <div class="mermaid">
+sequenceDiagram
+    participant U as User
+    participant EX as Explanation Agent
+    participant SA as Strategy Agent
+    participant RA as Risk Agent
+    participant RS as Research Agent
+    participant DB as Database
+
+    U->>EX: "Why did you sell NVDA?"
+    EX->>EX: Parse intent: TRADE_EXPLANATION
+    EX->>EX: Extract entities: NVDA, sell
+    
+    EX->>DB: Get recent NVDA trades
+    DB->>EX: Trade details + reasoning trace
+    
+    EX->>SA: Get strategy context
+    SA->>EX: Signal conflict details
+    
+    EX->>RS: Get research context
+    RS->>EX: News/events at trade time
+    
+    EX->>EX: Synthesize explanation
+    EX->>U: "I trimmed NVDA by 48% on Tuesday because..."
+    
+    U->>EX: "What if I had kept it?"
+    EX->>EX: Parse intent: SCENARIO_ANALYSIS
+    EX->>SA: Request counterfactual
+    SA->>EX: Scenario projection
+    EX->>U: "If you had kept the full position..."
+            </div>
+
+            <h3>6.3 Daily Summary Generation</h3>
+            <div class="mermaid">
+flowchart TB
+    subgraph Inputs["End of Day Data"]
+        I1["Portfolio Performance"]
+        I2["Trades Executed"]
+        I3["Risk Metrics"]
+        I4["Research Highlights"]
+        I5["Market Context"]
+    end
+
+    EX["Explanation Agent"]
+
+    I1 --> EX
+    I2 --> EX
+    I3 --> EX
+    I4 --> EX
+    I5 --> EX
+
+    EX --> G["Generate Daily Summary"]
+
+    subgraph Sections["Summary Sections"]
+        G --> S1["Performance Overview"]
+        G --> S2["Key Decisions & Rationale"]
+        G --> S3["Risk Status"]
+        G --> S4["Tomorrow's Outlook"]
+        G --> S5["Action Items (if any)"]
+    end
+
+    S1 --> O["Daily Email/Notification"]
+    S2 --> O
+    S3 --> O
+    S4 --> O
+    S5 --> O
+
+    style EX fill:#6b21a8,stroke:#a855f7
+            </div>
+        </section>
+
+        <!-- Section 7: Multi-Agent Coordination -->
+        <section id="coordination" class="workflow-section">
+            <h2>🔗 Multi-Agent Coordination</h2>
+            <p class="description">
+                Agents communicate through a structured message protocol, enabling collaboration while maintaining clear responsibilities.
+            </p>
+
+            <h3>7.1 Message Protocol</h3>
+            <div class="mermaid">
+flowchart TB
+    subgraph AgentMessage["📨 AgentMessage"]
+        AM1["message_id: String"]
+        AM2["source_agent: String"]
+        AM3["target_agent: String"]
+        AM4["type: MessageType"]
+        AM5["timestamp: DateTime"]
+        AM6["payload: Object"]
+        AM7["confidence_score: Float"]
+        AM8["reasoning_trace: Array"]
+    end
+
+    subgraph MessageType["📋 MessageType (Enum)"]
+        MT1["QUERY"]
+        MT2["RESPONSE"]
+        MT3["ALERT"]
+        MT4["RECOMMENDATION"]
+        MT5["APPROVAL_REQUEST"]
+        MT6["APPROVAL_RESPONSE"]
+    end
+
+    subgraph ReasoningTrace["🔍 ReasoningTrace"]
+        RT1["step_id: String"]
+        RT2["description: String"]
+        RT3["evidence: Object"]
+        RT4["confidence: Float"]
+    end
+
+    AgentMessage -->|"contains"| MessageType
+    AgentMessage -->|"includes"| ReasoningTrace
+
+    style AgentMessage fill:#1e40af,stroke:#3b82f6
+    style MessageType fill:#166534,stroke:#22c55e
+    style ReasoningTrace fill:#6b21a8,stroke:#a855f7
+            </div>
+
+            <h3>7.2 Inter-Agent Communication Flow</h3>
+            <div class="mermaid">
+flowchart TB
+    subgraph Research["Research Agent"]
+        R1["News Alert:<br/>AAPL earnings miss"]
+    end
+
+    subgraph Strategy["Strategy Agent"]
+        S1["Receive Alert"]
+        S2["Re-evaluate AAPL position"]
+        S3["Generate trim recommendation"]
+    end
+
+    subgraph Risk["Risk Agent"]
+        RK1["Validate trade"]
+        RK2["Check post-trade risk"]
+    end
+
+    subgraph Execution["Execution Agent"]
+        E1["Queue order"]
+        E2["Execute trade"]
+    end
+
+    subgraph Explanation["Explanation Agent"]
+        EX1["Generate user notification"]
+    end
+
+    R1 -->|"ALERT"| S1
+    S1 --> S2
+    S2 --> S3
+    S3 -->|"APPROVAL_REQUEST"| RK1
+    RK1 --> RK2
+    RK2 -->|"APPROVAL_RESPONSE"| E1
+    E1 --> E2
+    E2 -->|"RESPONSE"| EX1
+    EX1 -->|"Push to User"| U["📱 User"]
+
+    style R1 fill:#166534,stroke:#22c55e
+    style S3 fill:#1e40af,stroke:#3b82f6
+    style RK2 fill:#991b1b,stroke:#ef4444
+    style E2 fill:#854d0e,stroke:#eab308
+    style EX1 fill:#6b21a8,stroke:#a855f7
+            </div>
+
+            <h3>7.3 Conflict Resolution Hierarchy</h3>
+            <div class="mermaid">
+flowchart TB
+    C["Signal Conflict Detected"] --> P["Priority Evaluation"]
+    
+    P --> L1["Level 1: RISK<br/><i>Always wins</i>"]
+    P --> L2["Level 2: REGULATORY<br/><i>Compliance constraints</i>"]
+    P --> L3["Level 3: STRATEGY<br/><i>Trend > Factor if conflict</i>"]
+    P --> L4["Level 4: RESEARCH<br/><i>Qualitative overlay</i>"]
+
+    L1 --> D["Final Decision"]
+    L2 --> D
+    L3 --> D
+    L4 --> D
+
+    D --> T["Log Reasoning Trace"]
+    T --> A["Apply Decision"]
+
+    style L1 fill:#991b1b,stroke:#ef4444
+    style L2 fill:#854d0e,stroke:#eab308
+    style L3 fill:#1e40af,stroke:#3b82f6
+    style L4 fill:#166534,stroke:#22c55e
+            </div>
+        </section>
+
+        <!-- Section 8: Daily Trading Orchestration -->
+        <section id="daily" class="workflow-section">
+            <h2>📅 Daily Trading Orchestration</h2>
+            <p class="description">
+                The complete daily workflow showing how all agents coordinate from pre-market through end-of-day.
+            </p>
+
+            <div class="mermaid">
+flowchart TB
+    subgraph PreMarket["🌅 Pre-Market (6:00 AM)"]
+        PM1["Research Agent:<br/>Overnight news scan"]
+        PM2["Data Pipeline:<br/>Fetch market data"]
+        PM3["Risk Agent:<br/>Calculate opening risk"]
+    end
+
+    subgraph MarketOpen["🔔 Market Open (9:30 AM)"]
+        MO1["Strategy Agent:<br/>Generate signals"]
+        MO2["Risk Agent:<br/>Validate trades"]
+        MO3["Execution Agent:<br/>Submit orders"]
+    end
+
+    subgraph Intraday["☀️ Intraday (Continuous)"]
+        ID1["Risk Agent:<br/>Monitor every 60s"]
+        ID2["Research Agent:<br/>News monitoring"]
+        ID3["Execution Agent:<br/>Manage orders"]
+        ID4["Explanation Agent:<br/>Handle queries"]
+    end
+
+    subgraph MarketClose["🔕 Market Close (4:00 PM)"]
+        MC1["Execution Agent:<br/>EOD order handling"]
+        MC2["Risk Agent:<br/>End-of-day risk report"]
+        MC3["Strategy Agent:<br/>Assess daily performance"]
+    end
+
+    subgraph PostMarket["🌙 Post-Market (5:00 PM)"]
+        POST1["Explanation Agent:<br/>Generate daily summary"]
+        POST2["Research Agent:<br/>Process after-hours news"]
+        POST3["Data Pipeline:<br/>Archive daily data"]
+    end
+
+    PM1 --> PM2
+    PM2 --> PM3
+    PM3 --> MO1
+    MO1 --> MO2
+    MO2 --> MO3
+    MO3 --> ID1
+    ID1 --> ID2
+    ID2 --> ID3
+    ID3 --> ID4
+    ID4 --> MC1
+    MC1 --> MC2
+    MC2 --> MC3
+    MC3 --> POST1
+    POST1 --> POST2
+    POST2 --> POST3
+            </div>
+
+            <div class="workflow-details">
+                <h5>Key Timing Constraints</h5>
+                <ul>
+                    <li>Pre-market processing must complete by 9:15 AM</li>
+                    <li>Opening orders submitted within 5 minutes of market open</li>
+                    <li>Risk metrics updated every 60 seconds during market hours</li>
+                    <li>EOD orders handled 15 minutes before close</li>
+                    <li>Daily summary delivered by 6:00 PM</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section 9: Risk Breach Response -->
+        <section id="breach" class="workflow-section">
+            <h2>🚨 Risk Breach Response Workflow</h2>
+            <p class="description">
+                Tiered response system for risk threshold violations, from warnings through emergency de-risking.
+            </p>
+
+            <div class="mermaid">
+flowchart TB
+    A["⚠️ Risk Threshold<br/>Approached"] --> B{"Severity<br/>Assessment"}
+
+    B -->|"90% of Limit"| W["WARNING"]
+    B -->|"100%+ of Limit"| C["CRITICAL"]
+    B -->|"150%+ of Limit"| E["EMERGENCY"]
+
+    subgraph Warning["Warning Response"]
+        W --> W1["Log event"]
+        W1 --> W2["Notify user"]
+        W2 --> W3["Alert Strategy Agent"]
+        W3 --> W4["Monitor closely"]
+    end
+
+    subgraph Critical["Critical Response"]
+        C --> C1["PAUSE new trades"]
+        C1 --> C2["Diagnose root cause"]
+        C2 --> C3["Generate de-risk options"]
+        C3 --> C4["Present to user"]
+        C4 --> C5{"User responds<br/>within 1hr?"}
+        C5 -->|"Yes"| C6["Execute user choice"]
+        C5 -->|"No"| C7["Auto-execute<br/>least disruptive"]
+    end
+
+    subgraph Emergency["Emergency Response"]
+        E --> E1["HALT all trading"]
+        E1 --> E2["Execute immediate<br/>de-risk"]
+        E2 --> E3["Move to defensive<br/>position"]
+        E3 --> E4["Notify user<br/>post-action"]
+    end
+
+    W4 --> R["Resume Normal"]
+    C6 --> R
+    C7 --> R
+    E4 --> R
+
+    style W fill:#854d0e,stroke:#eab308
+    style C fill:#991b1b,stroke:#ef4444
+    style E fill:#7f1d1d,stroke:#dc2626
+    style R fill:#166534,stroke:#22c55e
+            </div>
+
+            <div class="grid-2">
+                <div class="metric-box">
+                    <h5>Warning Threshold</h5>
+                    <div class="metric-value">90%</div>
+                    <p style="color: #94a3b8; font-size: 0.85rem;">User notified, monitoring increased</p>
+                </div>
+                <div class="metric-box">
+                    <h5>Critical Threshold</h5>
+                    <div class="metric-value">100%</div>
+                    <p style="color: #94a3b8; font-size: 0.85rem;">Trading paused, 1hr user response window</p>
+                </div>
+                <div class="metric-box">
+                    <h5>Emergency Threshold</h5>
+                    <div class="metric-value">150%</div>
+                    <p style="color: #94a3b8; font-size: 0.85rem;">Immediate autonomous de-risking</p>
+                </div>
+                <div class="metric-box">
+                    <h5>Recovery Target</h5>
+                    <div class="metric-value">&lt;80%</div>
+                    <p style="color: #94a3b8; font-size: 0.85rem;">Normal operations resume</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 10: Conversational Interface -->
+        <section id="conversational" class="workflow-section">
+            <h2>💬 Conversational Interface Workflow</h2>
+            <p class="description">
+                Natural language interface enabling users to query their portfolio, understand decisions, and request actions.
+            </p>
+
+            <h3>10.1 Query Processing Pipeline</h3>
+            <div class="mermaid">
+flowchart LR
+    U["User Query"] --> P["Parse Intent"]
+    
+    P --> I1["PORTFOLIO_STATUS"]
+    P --> I2["TRADE_EXPLANATION"]
+    P --> I3["RISK_QUERY"]
+    P --> I4["SCENARIO_ANALYSIS"]
+    P --> I5["ACTION_REQUEST"]
+
+    I1 --> D1["Fetch current<br/>portfolio state"]
+    I2 --> D2["Retrieve trade<br/>reasoning trace"]
+    I3 --> D3["Get risk metrics<br/>+ diagnosis"]
+    I4 --> D4["Run projection<br/>models"]
+    I5 --> D5["Validate action<br/>+ get approval"]
+
+    D1 --> G["Generate<br/>Response"]
+    D2 --> G
+    D3 --> G
+    D4 --> G
+    D5 --> G
+
+    G --> R["Natural Language<br/>Response"]
+    R --> U2["User"]
+
+    style P fill:#6b21a8,stroke:#a855f7
+    style G fill:#6b21a8,stroke:#a855f7
+            </div>
+
+            <h3>10.2 Example Conversation Flows</h3>
+            <div class="mermaid">
+sequenceDiagram
+    participant U as User
+    participant E as Explanation Agent
+    participant S as Strategy Agent
+    participant R as Risk Agent
+
+    Note over U,R: Portfolio Status Query
+    U->>E: "How's my portfolio doing?"
+    E->>E: Fetch performance metrics
+    E->>R: Get risk summary
+    R->>E: VaR, drawdown, etc.
+    E->>U: "Your portfolio is up 2.3% today..."
+
+    Note over U,R: Trade Explanation
+    U->>E: "Why did you sell half my NVDA?"
+    E->>S: Get trade reasoning trace
+    S->>E: Trend signal + risk + context
+    E->>U: "I trimmed NVDA because..."
+
+    Note over U,R: Action Request
+    U->>E: "Buy $5000 of AAPL"
+    E->>S: Validate request
+    S->>R: Risk check
+    R->>S: Approved with adjustment
+    S->>E: Recommend $4500 for limits
+    E->>U: "I can buy $4500 to stay within..."
+    U->>E: "OK, do it"
+    E->>S: Execute confirmed
+    S->>E: Order submitted
+    E->>U: "Done! Order submitted at $182.50"
+            </div>
+
+            <h3>10.3 Supported Query Types</h3>
+            <div class="mermaid">
+mindmap
+    root((Conversational<br/>Interface))
+        Portfolio
+            Current value
+            Performance
+            Holdings breakdown
+            Sector allocation
+        Trades
+            Why did you buy/sell X?
+            What trades today?
+            Pending orders
+            Trade history
+        Risk
+            Current risk level
+            What if scenarios
+            Breach explanations
+            Limit status
+        Tax
+            Harvesting opportunities
+            Year-to-date gains
+            Wash sale status
+            Tax lot selection
+        Actions
+            Buy/sell requests
+            Set alerts
+            Change preferences
+            Pause trading
+            </div>
+        </section>
+
+        <footer style="text-align: center; padding: 2rem; color: #64748b; border-top: 1px solid rgba(71, 85, 105, 0.3); margin-top: 2rem;">
+            <p>AutoMoneyBot PRD v3.0 - Agentic AI Architecture</p>
+            <p style="font-size: 0.85rem;">Generated January 2026 | Confidential</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#6366f1',
+                primaryTextColor: '#f1f5f9',
+                primaryBorderColor: '#818cf8',
+                lineColor: '#64748b',
+                secondaryColor: '#1e293b',
+                tertiaryColor: '#0f172a',
+                background: '#0f172a',
+                mainBkg: '#1e293b',
+                nodeBorder: '#475569',
+                clusterBkg: 'rgba(30, 41, 59, 0.8)',
+                titleColor: '#c084fc',
+                edgeLabelBackground: '#1e293b'
+            },
+            flowchart: {
+                curve: 'basis',
+                padding: 20
+            },
+            sequence: {
+                actorMargin: 50,
+                boxMargin: 10,
+                boxTextMargin: 5
+            }
+        });
+    </script>
+</body>
+</html>
